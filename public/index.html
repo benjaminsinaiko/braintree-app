@@ -2,21 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My App</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.js"></script>
+  <title>Checkout</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="index.css">
+  <!-- JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="index.js" defer></script>
 </head>
 <body>
-  <div id="app">
-    <router-view></router-view>
+
+  <div class="container">
+    <h2>Braintree API</h2>
   </div>
+  <!-- Bootstrap inspired Braintree Hosted Fields example -->
+  <div class="panel panel-default bootstrap-basic">
+    <div class="panel-heading">
+      <h3 class="panel-title">Enter Card Details</h3>
+    </div>
+
+    <form class="panel-body">
+      <div class="row">
+        <div class="form-group col-sm-8">
+            <label class="control-label">Card Number</label>
+          <!--  Hosted Fields div container -->
+          <div class="form-control" id="card-number"></div>
+          <span class="helper-text"></span>
+        </div>
+        <div class="form-group col-sm-4">
+          <div class="row">
+            <label class="control-label col-xs-12">Expiration Date</label>
+            <div class="col-xs-6">
+              <!--  Hosted Fields div container -->
+              <div class="form-control" id="expiration-month"></div>
+            </div>
+            <div class="col-xs-6">
+              <!--  Hosted Fields div container -->
+              <div class="form-control" id="expiration-year"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label class="control-label">Security Code</label>
+          <!--  Hosted Fields div container -->
+          <div class="form-control" id="cvv"></div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label class="control-label">Zipcode</label>
+          <!--  Hosted Fields div container -->
+          <div class="form-control" id="postal-code"></div>
+        </div>
+      </div>
+
+      <!-- Payment button -->
+      <button value="submit" id="submit" class="btn btn-success btn-lg center-block">Pay with <span id="card-type">Card</span></button>
+    </form>
+  </div>
+
+  <!-- Load the required client component. -->
+  <script src="https://js.braintreegateway.com/web/3.32.1/js/client.min.js"></script>
+
+  <!-- Load Hosted Fields component. -->
+  <script src="https://js.braintreegateway.com/web/3.32.1/js/hosted-fields.min.js"></script>
 </body>
 </html>
 
-<template id="home-page">
-  <div class="container">
-    <h1>{{ message }}</h1>
-  </div>
-</template>
+
+
