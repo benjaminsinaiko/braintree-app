@@ -1,12 +1,8 @@
 class V1::CheckoutsController < ApplicationController
-  
   def new
-    @client_token = gateway.client_token.generate
-  end
-
-  def show
-    @transaction = gateway.transaction.find(params[:id])
-    @result = _create_result_hash(@transaction)
+    client_token = gateway.client_token.generate
+    # p client_token
+    render json: client_token
   end
 
   def gateway
