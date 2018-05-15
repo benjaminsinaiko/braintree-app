@@ -1,5 +1,6 @@
 /* global braintree, axios*/
 
+const form = document.querySelector("#hosted-fields");
 const submit = document.querySelector("#submit");
 
 const hostedFields = function() {
@@ -65,6 +66,25 @@ const hostedFields = function() {
             }
             // Make Pay button Active
             submit.removeAttribute("disabled");
+
+            form.addEventListener(
+              "submit",
+              function(event) {
+                event.preventDefault();
+
+                hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
+                  if (tokenizeErr) {
+                    console.error(tokenizeErr);
+                    return;
+                  }
+
+                  // If this was a real integration, this is where you would
+                  // send the nonce to your server.
+                  console.log("Got a nonce: " + payload.nonce);
+                });
+              },
+              false
+            );
           }
         );
       }
