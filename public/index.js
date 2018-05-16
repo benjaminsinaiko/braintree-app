@@ -85,7 +85,8 @@ const hostedFields = function() {
                         payment_method_nonce: payload.nonce
                       })
                       .then(response => {
-                        console.log(response);
+                        console.log("success: ", response.data);
+                        displaySuccess();
                       })
                       .catch(function(error) {
                         console.log(error);
@@ -102,3 +103,10 @@ const hostedFields = function() {
   });
 };
 hostedFields();
+
+function displaySuccess() {
+  const paymentForm = document.getElementById("payment-form");
+  const success = document.getElementById("success-display");
+  paymentForm.classList.toggle("hide");
+  success.classList.toggle("hide");
+}

@@ -1,15 +1,24 @@
 /* Uses Bootstrap stylesheets for styling, see linked CSS*/
 body {
-  background-color: #ced6e1;
+  background-color: #616161;
 }
 
 .panel {
   width: 80%;
+  max-width: 700px;
   margin: 2em auto;
+  display: block;
+}
+
+.hide {
+  display: none;
 }
 
 .bootstrap-basic {
-  background: white;
+  color: white;
+  font-family: monospace;
+  background: #1abc9c;
+  /*background: #616161;*/
 }
 
 .panel-body {
@@ -23,6 +32,21 @@ body {
   margin-top: 5px;
   height: 12px;
   display: block;
+}
+
+#success-display {
+  color: white;
+  background-color: #1abc9c;
+  padding: 10px;
+  text-align: center;
+  width: 50%;
+  max-width: 700px;
+  margin: 2em auto;
+  display: block;
+}
+
+#success-display h1 {
+  margin: 20px 0;
 }
 
 /* Braintree Hosted Fields styling classes*/
