@@ -7,7 +7,7 @@ class V1::CheckoutsController < ApplicationController
 
   def create
     nonce = params["payment_method_nonce"]
-
+    # render json: {message: 'create method'}
     result = gateway.transaction.sale(
       amount: 13.00,
       payment_method_nonce: nonce,
@@ -16,7 +16,8 @@ class V1::CheckoutsController < ApplicationController
       }
     )
     if result.success? || result.transaction
-      redirect_to checkout_path(result.transaction.id)
+      # redirect_to checkout_path(result.transaction.id)
+      render json: {message: 'create method'}
     else
       error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }
       flash[:error] = error_messages

@@ -76,11 +76,21 @@ const hostedFields = function() {
                   if (tokenizeErr) {
                     console.error(tokenizeErr);
                     return;
+                  } else {
+                    // If this was a real integration, this is where you would
+                    // send the nonce to your server.
+                    console.log("Got a nonce: " + payload.nonce);
+                    axios
+                      .post("http://localhost:3000/v1/checkouts/", {
+                        payment_method_nonce: payload.nonce
+                      })
+                      .then(response => {
+                        console.log(response);
+                      })
+                      .catch(function(error) {
+                        console.log(error);
+                      });
                   }
-
-                  // If this was a real integration, this is where you would
-                  // send the nonce to your server.
-                  console.log("Got a nonce: " + payload.nonce);
                 });
               },
               false
