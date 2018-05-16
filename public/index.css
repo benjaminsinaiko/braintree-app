@@ -18,7 +18,6 @@ body {
   color: white;
   font-family: monospace;
   background: #1abc9c;
-  /*background: #616161;*/
 }
 
 .panel-body {
@@ -32,6 +31,25 @@ body {
   margin-top: 5px;
   height: 12px;
   display: block;
+}
+
+#loader {
+  border: 16px solid white; /* Light grey */
+  border-top: 16px solid #1abc9c; /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 150px auto;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #success-display {
@@ -60,6 +78,14 @@ body {
   border: 1px solid #ebcccc;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(100, 100, 0, 0.6);
+}
+
+.braintree-hosted-fields-invalid {
+  border-color: tomato;
+}
+
+.braintree-hosted-fields-valid {
+  border-color: limegreen;
 }
 
 @media (max-width: 670px) {

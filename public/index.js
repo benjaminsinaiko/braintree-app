@@ -7,7 +7,6 @@ const hostedFields = function() {
   axios.get("http://localhost:3000/v1/").then(response => {
     // Get client token
     const clientToken = response.data;
-    // console.log(clientToken);
 
     // Create client
     const client = braintree.client.create(
@@ -22,18 +21,25 @@ const hostedFields = function() {
           console.log("client: ", clientInstance);
         }
 
-        // Create hosted fields
+        // Create Hosted Fields
         braintree.hostedFields.create(
           {
             client: clientInstance,
             styles: {
+              // Style all elements
               input: {
-                "font-size": "14px",
-                "font-family": "helvetica, tahoma, calibri, sans-serif",
-                color: "#3a3a3a"
+                "font-size": "16px",
+                color: ""
               },
+              // Styling element state
               ":focus": {
-                color: "black"
+                color: "blue"
+              },
+              ".valid": {
+                color: "green"
+              },
+              ".invalid": {
+                color: "red"
               }
             },
             fields: {
@@ -64,8 +70,8 @@ const hostedFields = function() {
               console.error(err);
               return;
             }
-            // Make Pay button Active
-            submit.removeAttribute("disabled");
+            // Replace loader with Hosted Fields
+            showHF();
 
             form.addEventListener(
               "submit",
@@ -74,11 +80,10 @@ const hostedFields = function() {
 
                 hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
                   if (tokenizeErr) {
-                    console.error(tokenizeErr);
+                    console.error("Tokenize err: ", tokenizeErr);
+                    console.error("details: ", tokenizeErr.details);
                     return;
                   } else {
-                    // If this was a real integration, this is where you would
-                    // send the nonce to your server.
                     console.log("Got a nonce: " + payload.nonce);
                     axios
                       .post("http://localhost:3000/v1/checkouts/", {
@@ -104,8 +109,15 @@ const hostedFields = function() {
 };
 hostedFields();
 
+const paymentForm = document.getElementById("payment-form");
+
+function showHF() {
+  const loader = document.querySelector("#loader");
+  loader.classList.toggle("hide");
+  paymentForm.classList.toggle("hide");
+}
+
 function displaySuccess() {
-  const paymentForm = document.getElementById("payment-form");
   const success = document.getElementById("success-display");
   paymentForm.classList.toggle("hide");
   success.classList.toggle("hide");
