@@ -102,12 +102,11 @@ const hostedFields = function() {
                         console.log("success: ", response.data);
                         if (response.data) {
                           displaySuccess();
-                        } else {
-                          hideToggle("error-message");
                         }
                       })
                       .catch(function(error) {
                         console.log(error);
+                        hideToggle("error-message");
                       });
                   }
                 });
