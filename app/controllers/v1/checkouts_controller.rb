@@ -15,11 +15,9 @@ class V1::CheckoutsController < ApplicationController
           :fail_on_duplicate_payment_method => true,
         }
       )
-    
-    if result.success?
-      customer = gateway.customer.find("210506249")
-      token = customer.payment_methods[0].token
 
+    if result.success?
+      token = result.payment_method.token
       result = gateway.transaction.sale(
         amount: 2.00,
         :payment_method_token => token,

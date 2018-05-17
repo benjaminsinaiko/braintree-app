@@ -67,7 +67,8 @@ body {
   margin: 20px 0;
 }
 
-#error-message {
+#error-message,
+#card-error {
   color: red;
   text-align: center;
   font-size: 18px;
