@@ -71,7 +71,9 @@ const hostedFields = function() {
               return;
             }
             // Replace loader with Hosted Fields
-            showHF();
+            // showHF();
+            hideToggle("loader");
+            hideToggle("payment-form");
 
             form.addEventListener(
               "submit",
@@ -82,16 +84,27 @@ const hostedFields = function() {
                   if (tokenizeErr) {
                     console.error("Tokenize err: ", tokenizeErr);
                     console.error("details: ", tokenizeErr.details);
+                    hideToggle("card-error");
+                    setTimeout(function() {
+                      document
+                        .getElementById("card-error")
+                        .classList.toggle("hide");
+                    }, 3000);
                     return;
                   } else {
                     console.log("Got a nonce: " + payload.nonce);
+                    // Send payment nonce to server
                     axios
                       .post("http://localhost:3000/v1/checkouts/", {
                         payment_method_nonce: payload.nonce
                       })
                       .then(response => {
                         console.log("success: ", response.data);
-                        displaySuccess();
+                        if (response.data) {
+                          displaySuccess();
+                        } else {
+                          hideToggle("error-message");
+                        }
                       })
                       .catch(function(error) {
                         console.log(error);
@@ -109,16 +122,24 @@ const hostedFields = function() {
 };
 hostedFields();
 
-const paymentForm = document.getElementById("payment-form");
-
-function showHF() {
-  const loader = document.querySelector("#loader");
-  loader.classList.toggle("hide");
-  paymentForm.classList.toggle("hide");
+function hideToggle(id) {
+  let el = document.getElementById(id);
+  el.classList.toggle("hide");
 }
+
+const paymentForm = document.getElementById("payment-form");
 
 function displaySuccess() {
   const success = document.getElementById("success-display");
   paymentForm.classList.toggle("hide");
   success.classList.toggle("hide");
+}
+
+function paymentErr() {
+  const message = document.getElementById("error-message");
+  message.classList.toggle("hide");
+}
+
+function newTransaction() {
+  location.reload();
 }

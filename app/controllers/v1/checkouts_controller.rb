@@ -7,19 +7,54 @@ class V1::CheckoutsController < ApplicationController
 
   def create
     nonce = params["payment_method_nonce"]
-    result = gateway.transaction.sale(
-      amount: 1.00,
-      payment_method_nonce: nonce,
-      :options => {
-        :submit_for_settlement => true
-      }
-    )
-    if result.success? || result.transaction
-      render json: {SuccessID: result.transaction.id}
+
+    result = gateway.payment_method.create(
+        :customer_id => "210506249",
+        :payment_method_nonce => nonce,
+        :options => {
+          :fail_on_duplicate_payment_method => true,
+        }
+      )
+    
+    if result.success?
+      customer = gateway.customer.find("210506249")
+      token = customer.payment_methods[0].token
+
+      result = gateway.transaction.sale(
+        amount: 2.00,
+        :payment_method_token => token,
+        :options => {
+          :submit_for_settlement => true
+        }
+      )
+      if result.success? || result.transaction
+        p result
+        render json: result
+      else
+        error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }
+        render json: error_messages
+      end
     else
-      error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }
-      render json: {Errors: error_messages}
+      customer = gateway.customer.find("210506249")
+      token = customer.payment_methods[0].token
+
+      result = gateway.transaction.sale(
+        amount: 2.00,
+        :payment_method_token => token,
+        :options => {
+          :submit_for_settlement => true
+        }
+      )
+      if result.success? || result.transaction
+        p result
+        render json: result
+      else
+        error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }
+        render json: error_messages
+      end
     end
+
+    
   end
 
   def gateway
