@@ -21,9 +21,6 @@ class V1::CheckoutsController < ApplicationController
       }
     )
     if result.success?
-      puts result
-      puts result.success?
-      puts result.transaction.status
       render json: {result: "Transaction successful!"}
     else
       error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }

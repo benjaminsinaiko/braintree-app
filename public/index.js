@@ -71,48 +71,41 @@ const hostedFields = function() {
               return;
             }
             // Replace loader with Hosted Fields
-            // showHF();
             hideToggle("loader");
             hideToggle("payment-form");
 
-            form.addEventListener(
-              "submit",
-              function(event) {
-                event.preventDefault();
+            // Submit card details for payment action
+            form.addEventListener("submit", function(event) {
+              event.preventDefault();
 
-                hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
-                  if (tokenizeErr) {
-                    console.error("Tokenize err: ", tokenizeErr);
-                    console.error("details: ", tokenizeErr.details);
-                    hideToggle("card-error");
-                    setTimeout(function() {
-                      document
-                        .getElementById("card-error")
-                        .classList.toggle("hide");
-                    }, 3000);
-                    return;
-                  } else {
-                    console.log("Got a nonce: " + payload.nonce);
-                    // Send payment nonce to server
-                    axios
-                      .post("http://localhost:3000/v1/checkouts/", {
-                        payment_method_nonce: payload.nonce
-                      })
-                      .then(response => {
-                        console.log("success: ", response.data);
-                        if (response.data) {
-                          displaySuccess();
-                        }
-                      })
-                      .catch(function(error) {
-                        console.log(error);
-                        hideToggle("error-message");
-                      });
-                  }
-                });
-              },
-              false
-            );
+              hostedFieldsInstance.tokenize(function(tokenizeErr, payload) {
+                if (tokenizeErr) {
+                  hideToggle("card-error");
+                  setTimeout(function() {
+                    document
+                      .getElementById("card-error")
+                      .classList.toggle("hide");
+                  }, 3000);
+                  return;
+                } else {
+                  // Send payment nonce to server
+                  axios
+                    .post("http://localhost:3000/v1/checkouts/", {
+                      payment_method_nonce: payload.nonce
+                    })
+                    .then(response => {
+                      if (response.data) {
+                        hideToggle("payment-form");
+                        hideToggle("success-display");
+                      }
+                    })
+                    .catch(function(error) {
+                      console.log(error);
+                      hideToggle("error-message");
+                    });
+                }
+              });
+            });
           }
         );
       }
@@ -124,19 +117,6 @@ hostedFields();
 function hideToggle(id) {
   let el = document.getElementById(id);
   el.classList.toggle("hide");
-}
-
-const paymentForm = document.getElementById("payment-form");
-
-function displaySuccess() {
-  const success = document.getElementById("success-display");
-  paymentForm.classList.toggle("hide");
-  success.classList.toggle("hide");
-}
-
-function paymentErr() {
-  const message = document.getElementById("error-message");
-  message.classList.toggle("hide");
 }
 
 function newTransaction() {

@@ -34,8 +34,8 @@ body {
 }
 
 #loader {
-  border: 16px solid white; /* Light grey */
-  border-top: 16px solid #1abc9c; /* Blue */
+  border: 16px solid white;
+  border-top: 16px solid #1abc9c;
   border-radius: 50%;
   width: 80px;
   height: 80px;
